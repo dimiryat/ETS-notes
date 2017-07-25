@@ -1,0 +1,2 @@
+	mcuset(MCU_DUT, 0.1);
+	dpinforce("VDRAIN_DPIN_S1", "C", 4.0, -0.3, MS_ALL);
