@@ -1,0 +1,20 @@
+	mcuset(MCU_MAIN, 50.0); //Assign main clock to 50MHz
+	mcumode(MCU_CH0,MCU_CLK,100,MCU_CLKA,MCU_TRIGNORMAL,0);
+	mcusequence(MCU_CH0,"VIN_RISE_SEQ","100 ON");
+
+	for (int i = 0; i < 100; i++)
+	{
+		VinRiseRamp[i] = ((double)i / 100) + 3; //Ramp from 3v to 4v
+		//VinRiseRamp[i]=2+(sin(3.14159*i*4/50)*2); //Sine wave. Amplitude from 0 to 4v
+		VinFallRamp[i] = 4 - ((double)i*1.5 / 99);
+	}
+	apuawgloader(VIN_APU_GP,"VIN_RISE",APU_FV,APU_10V,APU_10MA,VinRiseRamp,100);
+	apuawgloader(VIN_APU_GP,"VIN_FALL", APU_FV, APU_10V, APU_10MA, VinFallRamp, 100);
+
+	apuset(VIN_APU_GP, APU_FVAWG, 3.0, APU_10V, APU_10MA, PIN_TO_VI); //VIN initial voltage is 0v for sine wave
+	lwait(5 ms); //Avoid bouncing
+	apuawgselect(VIN_APU_GP,"VIN_RISE",0,99,0); //Select which AWG section needs to be run
+	mcuconnect(MCU_CH0, "GROUP%d ",VIN_APU_GP); //
+	//mcurun("VIN_RISE_SEQ",NULL,1);
+	mcustart("VIN_RISE_SEQ",NULL,0);
+	mcustop();
