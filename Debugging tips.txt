@@ -1,0 +1,1 @@
+1. 可以藉由error message的視窗來發現一些ETS上的non fatal語法錯誤. 因為不是C++語法上的錯誤,所以在building code的時候是不會發現的
