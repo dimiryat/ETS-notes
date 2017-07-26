@@ -1,16 +1,15 @@
 mcuset(MCU_MAIN, 50.0); // Set master clock to 50MHz
 mcumode(MCU_CH0,MCU_CLK,500,MCU_CLKA,MCU_TRIGNORMAL,0);
-
 // Important!
 // APU maximize digitizing frequency is 100KHz
 // Different resources have different limitation
 // And it also means if signal was greater than 10KHz
 // Then it's meaningless to use APU digitizing that signal
 
-mcusequence(MCU_CH0,"GATE_DIGITIZING_SEQ","200 ON");
-apuset(GATE_APU_NO_GP, APU_FI, 0.0, APU_10V, APU_10MA, PIN_TO_VI );
-apuadcmode( GATE_APU_NO_GP, APU_MV, 1 );
-mcuconnect(MCU_CH0, "GROUP%d ",GATE_APU_NO_GP);
-mcurun("GATE_DIGITIZING_SEQ",NULL,1);
-blockread(GATE_APU_NO_GP,200);
-namearray("GATE_PULSE", NAMEARRAY_APUADC, GATE_APU_NO_GP,1);
+mcusequence(MCU_CH0,"GATE_DIGITIZING_SEQ","200 ON"); // Creating a sequence for MCU
+apuset(GATE_APU_NO_GP, APU_FI, 0.0, APU_10V, APU_10MA, PIN_TO_VI ); // Since digitizing voltage, so force a 0 current to the target pin
+apuadcmode( GATE_APU_NO_GP, APU_MV, 1 ); // Set that pin to digitizing mode
+mcuconnect(MCU_CH0, "GROUP%d ",GATE_APU_NO_GP); // Connecting the pin to the MCU channel which has the sequence we need to run
+mcurun("GATE_DIGITIZING_SEQ",NULL,1); // Starting clocking the seqeunce
+blockread(GATE_APU_NO_GP,200); // Reading the captured data to a "block"
+namearray("GATE_PULSE", NAMEARRAY_APUADC, GATE_APU_NO_GP,1); // Puting the data into a "name array" named as "GATE_PULSE"
