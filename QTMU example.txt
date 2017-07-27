@@ -1,0 +1,9 @@
+//This code is to measure period of a output signal from pin "GATE_PIN"
+
+qtmumode(TMUU_GP, QTMU_TIMER, QTMU_ARMOUTOFF);
+dpinrcvset("GATE_DPIN", DPIN_RCV_ATTEN, 2.5, 2, MS_ALL);
+qtmustart(TMUU_GP, "GATE_DPIN", QTMU_RCVH, QTMU_NEG, 2, QTMU_NOFILTER, 0.0);
+qtmustop(TMUU_GP, "GATE_DPIN", QTMU_RCVH, QTMU_NEG, 3, QTMU_NOFILTER, 0.0);
+qtmuarm(TMUU_GP, "AUTO", 1, QTMU_EDGE, QTMU_NEG);
+qtmumt(TMUU_GP, QTMU_READFREQ,1000);
+groupgetresults(TMU_RESULT, NUM_SITES);
