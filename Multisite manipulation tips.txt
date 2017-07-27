@@ -1,0 +1,10 @@
+msLogResultAll() only can be used for the value measured from groupgetresults().
+It only accepts the readings from system's measurement routine, such as apumv().
+If you need to log out the readings from other variables you created, you need to use FOR_EACH_SITE() routine and msLogResult() such as the example below.
+
+	site=0;
+	FOR_EACH_SITE( site, NUM_SITES )
+	{
+		msLogResult(site,DSIndex+0,VIN_ON[site].value);
+		msLogResult(site,DSIndex+1,VIN_OFF[site].value);
+	}
