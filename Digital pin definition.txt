@@ -1,0 +1,4 @@
+/*
+Digital pins are definied in vector editor, not in cpp file.
+We can use dpingroup() to group specific pins in cpp.
+*/
