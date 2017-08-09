@@ -1,4 +1,14 @@
 /*
 Digital pins are definied in vector editor, not in cpp file.
 We can use dpingroup() to group specific pins in cpp.
+In some situation that we will need to control digital pins site by site.
+In this kind of situation we will definetely need to define diginal pin group in cpp, such as the example below...
 */
+
+GLOBAL  char *GATE_DPIN_GP[] = { "GATE_DPIN_S1","GATE_DPIN_S2","GATE_DPIN_S3","GATE_DPIN_S4" };
+GLOBAL  char *VDRAIN_DPIN_GP[] = { "VDRAIN_DPIN_S1","VDRAIN_DPIN_S2","VDRAIN_DPIN_S3","VDRAIN_DPIN_S4" };
+
+dpinforce(VDRAIN_DPIN_GP[site], "1", 5.0, 0.0, MS_ALL);
+lwait(10);
+dpinforce(VDRAIN_DPIN_GP[site], "0", 5.0, 0.0, MS_ALL);
+lwait(1 ms);
