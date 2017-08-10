@@ -1,0 +1,34 @@
+/*
+This is a example code for using digital pattern to capture output data
+And put it into a array variable.
+If we need to use this method, we need to create a capture label 
+(need to assign PSQ) in vector editor
+And put that label in "Capture" column of that pattern
+*/
+
+TestModeEntry(1); //Entering TM1
+apuset(VIN_APU_GP, APU_FV, 5, APU_10V, APU_10MA, PIN_TO_VI );
+lwait(3 ms);
+mcurun (MCU_NOANALOG, "TM3", 1); //DRAIN toggle 3 times to enter Read Mode
+lwait(3 ms);
+apuset(VIN_APU_GP, APU_FV, 8, APU_10V, APU_10MA, PIN_TO_VI );
+lwait(3 ms);
+cbitclose(R_GATE_DPIN_GP);
+lwait(5 ms);
+dpinforce( "GATE_DPIN", "Z", 5, 0.0, MS_ALL );
+mcurun (MCU_NOANALOG, "ReadBit", 1);
+lwait(1 ms);
+// Log the results
+site=0;
+FOR_EACH_SITE( site, NUM_SITES )
+{
+    int count=dpingetcapturedata("GATE_DPIN", DPIN_CAPTDATA, -1, NULL, site );
+    if (count)
+    {
+        PINT64 pData = new INT64[count];
+        dpingetcapturedata("GATE_DPIN", DPIN_CAPTDATA,count,pData,site);
+        ReadBitValue[site]=*(pData)*8+*(pData+1)*4+*(pData+2)*2+*(pData+3);
+        delete pData;
+    }
+		msLogResult(site,DSIndex+0,ReadBitValue[site]);
+}
