@@ -1,0 +1,6 @@
+//SPU100 measurement path defaul filter frequency is 19KHz band pass
+//So you need to remember to set a appropriate filter frequency to get the best signal
+
+sp100set(DRAIN_SPUL_NO_GP, SP_FV, 10, SP_30V, SP_100MA );
+sp100adcmode( DRAIN_SPUL_NO_GP, SP_MV_1X, SP_MI_1X, 1 );
+sp100filter( DRAIN_SPUL_NO_GP, SP_VFILTER_300KHZ, SP_IFILTER_300KHZ, SP_ACFILTER_1KHZ_OFF );
