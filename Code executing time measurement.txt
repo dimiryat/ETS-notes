@@ -1,0 +1,5 @@
+mark(0);
+/*
+The code you need to measure
+*/
+long temp_time=ltime(0);
